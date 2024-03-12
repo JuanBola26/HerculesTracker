@@ -2,19 +2,23 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hercules_tracker/features/user_auth/presentation/pages/account_page.dart';
+import 'package:hercules_tracker/features/user_auth/presentation/pages/child_page.dart';
+import 'package:hercules_tracker/features/user_auth/presentation/pages/hormonas_page.dart';
+import 'package:hercules_tracker/features/user_auth/presentation/pages/testosterona_page.dart';
 
 class CardItem{
   final String arImage;
   final String title;
   final String subtitle;
+  final Widget page;
 
   const CardItem({
     required this.arImage,
     required this.title,
     required this.subtitle,
+    required this.page,
   });
 }
-
 
 class HomePage extends StatefulWidget {
   @override
@@ -30,31 +34,19 @@ class _HomePageState extends State<HomePage> {
       arImage: "assets/img/testosterona.jpeg",
       title: "Hormonas",
       subtitle: "Ver",
+      page: PaginaHormonas(), // Página correspondiente a la tarjeta
     ),
     CardItem(
-      arImage: "assets/img/logo_HT.png",
-      title: "Crecimiento",
+      arImage: "assets/img/img_testosterona.jpeg",
+      title: "Testosterona",
       subtitle: "Ver",
+      page: PaginaImportanciaTestosterona(), // Página correspondiente a la tarjeta
     ),
     CardItem(
       arImage: "assets/img/etapa_niño.jpeg",
-      title: "Niñez",
+      title: "Etapa de la Niñez",
       subtitle: "Ver",
-    ),
-    CardItem(
-      arImage: "assets/img/etapa_puberto.jpeg",
-      title: "Pubertad",
-      subtitle: "Ver",
-    ),
-    CardItem(
-      arImage: "assets/img/etapa_adolescencia.jpeg",
-      title: "Adolescencia",
-      subtitle: "Ver",
-    ),
-    CardItem(
-      arImage: "assets/img/etapa_adulto.jpeg",
-      title: "Adultez",
-      subtitle: "Ver",
+      page: PaginaNinez(), // Página correspondiente a la tarjeta
     ),
   ];
 
@@ -122,9 +114,15 @@ class _HomePageState extends State<HomePage> {
             height: 226, // Altura definida para el ListView
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              itemCount: 6,
+              itemCount: items.length,
               separatorBuilder: (context, _) => SizedBox(width: 15),
-              itemBuilder: (context, index) => buildCard(item: items[index]),
+              itemBuilder: (context, index) => GestureDetector(
+                onTap: () {
+                  // Navegar a la página correspondiente cuando se hace clic en la tarjeta
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => items[index].page));
+                },
+                child: buildCard(item: items[index]),
+              ),
             ),
           ),
         ],
@@ -164,7 +162,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-
   Widget buildCard({
     required CardItem item,
   }) => Container(
@@ -173,39 +170,35 @@ class _HomePageState extends State<HomePage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Expanded(
-            child: AspectRatio(
-              aspectRatio: 2/1,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                  child: Image.asset(
-                    item.arImage,
-                    fit: BoxFit.cover,
-                  ),
+          child: AspectRatio(
+            aspectRatio: 2/1,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
+                item.arImage,
+                fit: BoxFit.cover,
               ),
             ),
+          ),
         ),
-        const SizedBox(height: 1), // Aumenta o disminuye el espaciado según sea necesario
+        const SizedBox(height: 1),
         Expanded(
           child: Container(
-            color: Colors.transparent, // Color de fondo para "Zapatos"
+            color: Colors.transparent,
             child: Center(
               child: Text(
                 item.title,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.normal,
-                  color: Colors.white, // Color de texto para "Zapatos"
+                  color: Colors.white,
                 ),
               ),
-
             ),
           ),
         ),
       ],
     ),
   );
-
-
-
-
 }
+
