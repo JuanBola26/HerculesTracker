@@ -2,11 +2,17 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hercules_tracker/features/user_auth/presentation/pages/account_page.dart';
+import 'package:hercules_tracker/features/user_auth/presentation/pages/adolescente_page.dart';
+import 'package:hercules_tracker/features/user_auth/presentation/pages/adultez_page.dart';
 import 'package:hercules_tracker/features/user_auth/presentation/pages/child_page.dart';
+import 'package:hercules_tracker/features/user_auth/presentation/pages/gym_page.dart';
 import 'package:hercules_tracker/features/user_auth/presentation/pages/hormonas_page.dart';
+import 'package:hercules_tracker/features/user_auth/presentation/pages/problemas_page.dart';
+import 'package:hercules_tracker/features/user_auth/presentation/pages/pubertad_page.dart';
+import 'package:hercules_tracker/features/user_auth/presentation/pages/secs_page.dart';
 import 'package:hercules_tracker/features/user_auth/presentation/pages/testosterona_page.dart';
 
-class CardItem{
+class CardItem {
   final String arImage;
   final String title;
   final String subtitle;
@@ -34,19 +40,59 @@ class _HomePageState extends State<HomePage> {
       arImage: "assets/img/testosterona.jpeg",
       title: "Hormonas",
       subtitle: "Ver",
-      page: PaginaHormonas(), // Página correspondiente a la tarjeta
+      page: PaginaHormonas(),
     ),
     CardItem(
       arImage: "assets/img/img_testosterona.jpeg",
       title: "Testosterona",
       subtitle: "Ver",
-      page: PaginaImportanciaTestosterona(), // Página correspondiente a la tarjeta
+      page: PaginaImportanciaTestosterona(),
     ),
     CardItem(
       arImage: "assets/img/etapa_niño.jpeg",
       title: "Etapa de la Niñez",
       subtitle: "Ver",
-      page: PaginaNinez(), // Página correspondiente a la tarjeta
+      page: PaginaNinez(),
+    ),
+    CardItem(
+      arImage: "assets/img/etapa_puberto.jpeg",
+      title: "Etapa de la Pubertad",
+      subtitle: "Ver",
+      page: PaginaPubertad(),
+    ),
+    CardItem(
+      arImage: "assets/img/etapa_adolescencia.jpeg",
+      title: "Etapa Adolescente",
+      subtitle: "Ver",
+      page: AdolescentePage(),
+    ),
+    CardItem(
+      arImage: "assets/img/etapa_adulto.jpeg",
+      title: "Etapa de la Adultez",
+      subtitle: "Ver",
+      page: AdultezPage(),
+    ),
+  ];
+
+  List<CardItem> otherItems = [
+    // Nuevos elementos de tarjeta para la segunda fila
+    CardItem(
+      arImage: "assets/img/hombre_sad.jpeg",
+      title: "Problemas comunes",
+      subtitle: "Ver",
+      page: ProblemasComunes(),
+    ),
+    CardItem(
+      arImage: "assets/img/gym_man.jpeg",
+      title: "Como afecta el GYM ",
+      subtitle: "Ver",
+      page: GymPage(),
+    ),
+    CardItem(
+      arImage: "assets/img/secsual.png",
+      title: "Salud sexual",
+      subtitle: "Ver",
+      page: SexualPage(),
     ),
   ];
 
@@ -57,11 +103,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> cargarContenido() async {
-    // Cargar el archivo JSON desde los activos
-    String jsonString = await rootBundle.loadString('assets/Contenido/prueba.json');
-    // Parsear el contenido JSON
+    String jsonString =
+    await rootBundle.loadString('assets/Contenido/prueba.json');
     Map<String, dynamic> data = json.decode(jsonString);
-    // Obtener el título y contenido del JSON
     setState(() {
       _titulo = data['titulo'];
       _contenido = data['contenido'];
@@ -75,57 +119,91 @@ class _HomePageState extends State<HomePage> {
         title: Center(
           child: Text(
             "Hercules Tracker",
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),
+            style: TextStyle(
+                fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),
         backgroundColor: Colors.black,
       ),
       backgroundColor: Colors.black,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  _titulo,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    _titulo,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  _contenido,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
+                  SizedBox(height: 20),
+                  Text(
+                    _contenido,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            height: 226, // Altura definida para el ListView
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: items.length,
-              separatorBuilder: (context, _) => SizedBox(width: 15),
-              itemBuilder: (context, index) => GestureDetector(
-                onTap: () {
-                  // Navegar a la página correspondiente cuando se hace clic en la tarjeta
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => items[index].page));
-                },
-                child: buildCard(item: items[index]),
+                ],
               ),
             ),
-          ),
-        ],
+            Container(
+              height: 226,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: items.length,
+                separatorBuilder: (context, _) => SizedBox(width: 15),
+                itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => items[index].page));
+                  },
+                  child: buildCard(item: items[index]),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20.0, left: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Las hormonas y tu salud",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 226,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: otherItems.length,
+                separatorBuilder: (context, _) => SizedBox(width: 15),
+                itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => otherItems[index].page));
+                  },
+                  child: buildCard(item: otherItems[index]),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.black87,
@@ -171,7 +249,7 @@ class _HomePageState extends State<HomePage> {
       children: [
         Expanded(
           child: AspectRatio(
-            aspectRatio: 2/1,
+            aspectRatio: 2 / 1,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Image.asset(
@@ -201,4 +279,3 @@ class _HomePageState extends State<HomePage> {
     ),
   );
 }
-
