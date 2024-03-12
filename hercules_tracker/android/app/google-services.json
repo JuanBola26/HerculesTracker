@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "64720394025",
+    "project_id": "hercules-tracker",
+    "storage_bucket": "hercules-tracker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64720394025:android:4e1ff726c08a73bf67c938",
+        "android_client_info": {
+          "package_name": "com.equipo8.hercules_tracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgqwgOIWcaRCG7Jyn-I3CDEH92uI5ko5Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
